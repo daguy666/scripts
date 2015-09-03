@@ -14,7 +14,8 @@ def packetCallBack(packet):
     basicPacket = str(packet[TCP].payload)
     output = reg.search(basicPacket)
     if output:
-        print output.group(1)
+        print "[*] Server: %s" % packet[IP].dst
+        print "[*] %s" % output.group(1)
 
 
 
