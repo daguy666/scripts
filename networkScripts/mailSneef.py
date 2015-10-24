@@ -7,7 +7,7 @@ from scapy.all import *
 def printTitle():
     print '\n'
     print '===' * 20
-    print 'Scanning for unencrypted mail traffic....'
+    print 'Listening for unencrypted mail traffic....'
     print '===' * 20
     print '\n'
 
