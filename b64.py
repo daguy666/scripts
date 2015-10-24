@@ -25,13 +25,12 @@ def encodeb64(info):
     print result
 
 if __name__ == '__main__':
-    info = raw_input("Decode or Encode? ")
-    formattedInfo = info.lower()
+    info = raw_input("Decode or Encode? ").lower()
     try:
-        if "decode" in formattedInfo:
-            decodeb64(formattedInfo)
-        elif "encode" in formattedInfo:
-            encodeb64(formattedInfo)
+        if "decode" in info:
+            decodeb64(info)
+        elif "encode" in info:
+            encodeb64(info)
         else:
             sys.exit("\033[31m[!]\033[0m That input was not relevant!")
     except Exception, err:
