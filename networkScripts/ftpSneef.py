@@ -28,7 +28,7 @@ def packetCallBack(packet):
     effteepea_packet = str(packet[TCP].payload)
     if "USER" in effteepea_packet or "PASS" in effteepea_packet:
         print "--" * 25
-        print "\n[=>] Server: %s" % packet[IP].dst
+        print "\n[=>] Destination: %s" % packet[IP].dst
         print "[=>] Source: %s" % packet[IP].src
         print "[=>] %s" % packet[TCP].payload
         print "--" * 25
