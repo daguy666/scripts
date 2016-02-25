@@ -18,7 +18,16 @@ __version__ = "0.1"
 
 import re
 import os
+
+import logging
+
+# Setup logging for scapy to run at Error level.
+logging.getLogger('scapy.runtime').setLevel(logging.ERROR)
+
 from scapy.all import *
+# Cleans up Scapy's mess a little bit.
+conf.verb=0
+
 
 reg = re.compile(r'^authorization:\s+(.*)$', re.I|re.M)
 
