@@ -30,7 +30,7 @@ var/
 *.spec
 
 # Clean up after pycharm 
-*.idea
+*.idea/
 
 
 # Installer logs
