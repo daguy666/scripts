@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
+import os
+import sys
 import psutil
+import platform
 
 '''
 sconn(fd=-1, family=2, type=1, laddr=('0.0.0.0', 22), raddr=(), status='LISTEN', pid=None)
@@ -54,5 +57,9 @@ class Get_Connection_Info(object):
 
 
 if __name__ == '__main__':
+    if platform.mac_ver()[0]: 
+        if os.getuid() != 0:
+            print "[!] Please run as root on OSX."
+            sys.exit(1)
     gci = Get_Connection_Info()
     gci.main()
