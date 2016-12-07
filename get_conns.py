@@ -5,12 +5,38 @@ import sys
 import psutil
 import platform
 
+from pprint import pprint
+
 '''
 sconn(fd=-1, family=2, type=1, laddr=('0.0.0.0', 22), raddr=(), status='LISTEN', pid=None)
 sconn(fd=-1, family=2, type=1, laddr=('0.0.0.0', 22), raddr=('0.0.0.0', 59162), status='ESTABLISHED', pid=None)
 sconn(fd=-1, family=2, type=2, laddr=('0.0.0.0', 5355), raddr=(), status='NONE', pid=None)
 sconn(fd=-1, family=2, type=1, laddr=('0.0.0.0', 56375), raddr=(), status='LISTEN', pid=None)
 '''
+
+class Get_Interface_Addresses(object):
+    
+    def __init__(self):
+        self.interface_info = psutil.net_if_addrs()
+        self.interface_name_list = []
+    
+    def gather_interface_info(self):
+        """
+        Take all the interface names and append
+        them to a list.
+        """
+        for int_name in self.interface_info:
+            #self.interface_name_list.append(int_name)
+            for i in self.interface_info[int_name]:
+                print "Interface: %s => IP: %s => Netmask: %s" % (int_name, i.address, i.netmask)
+
+
+    def main(self):
+        print "--" * 25
+        print "Interface Info"
+        print "--" * 25
+        self.gather_interface_info()
+        print "--" * 25
 
 class Get_Connection_Info(object):
 
@@ -63,3 +89,5 @@ if __name__ == '__main__':
             sys.exit(1)
     gci = Get_Connection_Info()
     gci.main()
+    gia = Get_Interface_Addresses()
+    gia.main()
