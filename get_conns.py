@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import re
 import sys
 import psutil
 import platform
@@ -14,11 +15,36 @@ sconn(fd=-1, family=2, type=2, laddr=('0.0.0.0', 5355), raddr=(), status='NONE',
 sconn(fd=-1, family=2, type=1, laddr=('0.0.0.0', 56375), raddr=(), status='LISTEN', pid=None)
 '''
 
+class Matching_Things(object):
+
+    def ip_v6(self, ok):
+		# Match IP_V6
+		if re.match(r"^(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))", ok):
+			return True
+		else:
+			return False
+
+    def mac_address(self, ok):
+		# Match mac address
+		if re.match(r"^([0-9a-fA-F][0-9a-fA-F][:-]){5}([0-9a-fA-F][0-9a-fA-F])$", ok):
+			return True
+		else:
+			return False
+
+    def ip_v4(self, ok):
+		# Match IP_V4
+		if re.match(r"^((25[0-5]|2[0-5][0-9]|[01]?[0-9][0-9]?)\.){3}(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$", ok):
+		    return True
+
+		else:
+			return False
+
 class Get_Interface_Addresses(object):
     
     def __init__(self):
         self.interface_info = psutil.net_if_addrs()
         self.interface_name_list = []
+        self.match = Matching_Things()
     
     def gather_interface_info(self):
         """
@@ -28,9 +54,16 @@ class Get_Interface_Addresses(object):
         for int_name in self.interface_info:
             #self.interface_name_list.append(int_name)
             for i in self.interface_info[int_name]:
-                print "Interface: %s => IP: %s => Netmask: %s" % (int_name, i.address, i.netmask)
-
-
+                if self.match.mac_address(i.address):
+                    address = "HW Address: %s" % i.address
+                elif self.match.ip_v4(i.address):
+                    address = "IP: %s" % i.address
+                elif self.match.ip_v6(i.address):
+                    address = "IPV6: %s" % i.address
+                else:
+                    address = "Address: %s " % i.address
+                print "Interface: %s => %s => Netmask: %s" % (int_name, address, i.netmask)
+    
     def main(self):
         print "--" * 25
         print "Interface Info"
