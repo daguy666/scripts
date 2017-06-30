@@ -6,6 +6,11 @@ import subprocess
 from datetime import datetime
 
 
+# ========== TODO ====================|
+# - Add path verification for         |
+#for the logfiles and directories.    |
+# ====================================|
+
 class Block_Xmlrpc(object):
 
     def __init__(self):
