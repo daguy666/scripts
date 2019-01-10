@@ -115,11 +115,14 @@ class Get_Connection_Info(object):
 
 
 if __name__ == '__main__':
-    if platform.mac_ver()[0]: 
-        if os.getuid() != 0:
-            print "[!] Please run as root on OSX."
-            sys.exit(1)
-    gci = Get_Connection_Info()
-    gci.main()
-    gia = Get_Interface_Addresses()
-    gia.main()
+    try:
+        if platform.mac_ver()[0]: 
+            if os.getuid() != 0:
+                print "[!] Please run as root on OSX."
+                sys.exit(1)
+        gci = Get_Connection_Info()
+        gci.main()
+        gia = Get_Interface_Addresses()
+        gia.main()
+    except KeyboardInterrupt:
+        print "\n\n[-] Program quit.\n"
