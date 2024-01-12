@@ -38,4 +38,5 @@ scripts
 
 ### totally not a canarytoken
 
-<a href="http://canarytokens.com/about/articles/1kpwioajcvl7bgl1hmlybakde/contact.php"</a>
+<a href="http://canarytokens.com/about/articles/1kpwioajcvl7bgl1hmlybakde/contact.php">Click here</a>
+
